@@ -19,5 +19,15 @@ def index(request):
     return render(request, 'tasks.html', context)
 
 
-#def updateTask
+def updateTask(request, pk):
+    task = Task.objects.get(id=pk)
+    form = TaskForm(instance=task) 
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
     
+    context = {'TaskForm': form}
+    return render(request, 'update-task.html', context)
